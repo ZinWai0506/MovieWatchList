@@ -3,17 +3,17 @@
    ========================================================================== */
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background-color: #c9c9de;
-  color: #333;
+  background-color: #204c40;
+  color: #7a2e2e;
   margin: 0;
   padding: 20px;
 }
-
+git branch -d branch-name
 /* Centered <main> with max-width and padding */
 main {
   max-width: 600px;
   margin: 40px auto;
-  background: #a07653;
+  background: #425d60;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -26,12 +26,12 @@ header {
 
 #app-title {
   margin: 0 0 5px 0;
-  color: #969a4d;
+  color: #dcdfa4;
 }
 
 #movie-count {
   margin: 0;
-  color: #666;
+  color: #e3c3c3;
   font-size: 0.95rem;
 }
 
