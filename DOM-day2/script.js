@@ -12,6 +12,14 @@ const filterBtns = document.querySelectorAll("filter-btn")
 // select #movie-list        → store in movieList
 // select #clear-watched-btn → store in clearWatchedBtn
 
+
+appTitle.textContent = "My Movie Watchlist"
+//this function chages the tittle on the main page
+console.log("Count says:", movieCount.textContent)
+
+movieCount.textContent = "0 movies"
+
+
 // select ALL elements with class "filter-btn" using querySelectorAll
 // store them in filterBtns — you'll loop over them in Phase 6
 console.log("______DOM Selection Checkpoint")
