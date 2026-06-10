@@ -19,6 +19,18 @@ console.log("Count says:", movieCount.textContent)
 
 movieCount.textContent = "0 movies"
 
+// .add() puts a class on the element
+movieCount.classList.add("active-filter")
+//this function seems to have highlighted the amount of movies
+
+// .remove() takes it off
+movieCount.classList.remove("active-filter")
+//with this function it stopped highlighting it
+
+// .toggle() adds if missing, removes if present — one call does both
+movieCount.classList.toggle("active-filter")
+movieCount.classList.toggle("active-filter")
+
 
 // select ALL elements with class "filter-btn" using querySelectorAll
 // store them in filterBtns — you'll loop over them in Phase 6
