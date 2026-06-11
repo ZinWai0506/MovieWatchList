@@ -75,6 +75,11 @@ movieForm.addEventListener("submit", (event) => {
   // 4. Log both values to the console
   console.log("Title: ", title);
   console.log("Movie Genre:", genre)
+  // 3. Phase 4 Connection: Pass those exact variables into your card builder
+  const newCard = createMovieCard(title, genre);
+
+  // 4. Append the newly created card into your <ul> list
+  movieList.appendChild(newCard);
   //    Type a title and genre, submit — confirm you see them in DevTools
 
   // 5. At the end, reset the form so the inputs are blank for the next entry
@@ -146,3 +151,4 @@ function createMovieCard(title, genre) {
     return li;
   //    The function's job is to build and return. Appending is the caller's job.
 }
+
