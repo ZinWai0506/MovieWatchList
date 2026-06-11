@@ -208,7 +208,7 @@ function updateCount() {
     movieCount.textContent = "1 movie";
   }
   else {
-    movieCount.textContent =`${movieCount} movies`;
+    movieCount.textContent = `${cardList} movies`;
   }
 }
 function updateFilterButtons(activeFilter) {
