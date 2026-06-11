@@ -1,3 +1,4 @@
+let currentFilter = "all"
 const appTitle = document.getElementById("app-title")
 const movieCount = document.getElementById("movie-count")
 const movieForm = document.getElementById("movie-form")
@@ -166,3 +167,84 @@ function updateCount() {
     movieCount.textContent =`${movieCount} movies`;
   }
 }
+function updateFilterButtons(activeFilter) {
+  // 1. Loop over filterBtns
+  Array.from(filterBtns).forEach((button)=>{
+    button.classList.remove("active-filter");
+    if (button.id === "filter-"  + activeFilter) {
+      button.classList.add("active-filter")
+    }
+
+  })
+  // 2. On each button:
+  //    - first remove "active-filter" from every button
+  //    - then add it back only to the one whose id matches the active filter
+  //      hint: btn.id === "filter-" + activeFilter
+}
+function applyFilter(filter) {
+  // 1. Update the currentFilter variable so the rest of the app knows what's active
+    currentFilter =  filter;
+
+
+  // 2. Update which button looks active
+  //    hint: call updateFilterButtons(filter)
+    updateFilterButtons(filter);
+
+  // 3. Get all cards in the list
+  //    hint: movieList.querySelectorAll(".movie-card")
+    const cards = movieList.querySelectorAll(".movie-card")
+
+  // 4. Loop over every card and decide: show it or hide it?
+    cards.forEach((card)=>{
+      const iaWatched = card.classList.contains("watched")
+      if (filter === "all"){
+        card.classList.remove("filtered-out")
+
+      }
+      else if (filter === "watched"){
+        if (isWatched){
+          card.classlist.remove("filtered-out")
+        }
+        else {
+          card.classlist.add("filtered-out")
+        }
+      }
+      else if (filter === "unwatched"){
+        if (isWatched){
+          card.classlist.remove("filtered-out")
+        }
+        else {
+          card.classlist.add("filtered-out")
+        }
+        
+      }
+    });
+
+    
+  //    if filter === "all"       → show every card
+  //    if filter === "watched"   → show cards with .watched, hide the rest
+  //    if filter === "unwatched" → show cards without .watched, hide the rest
+  //    hint: card.classList.contains("watched") tells you the card's current state
+  //    hint: card.classList.add("filtered-out") hides it, .remove("filtered-out") shows it
+}
+filterBtns.forEach((button)=>{
+  addEventListener("click",()=>{
+    const filterName = btn.id.replace("filter-", "");
+    applyFilter(filterName)
+  })
+
+})
+clearWatchedBtn.addEventListener("click", () => {
+  // 1. Select all cards that currently have the "watched" class
+  //    hint: movieList.querySelectorAll(".watched")
+    const rmWatched = movieList.querySelectorAll(".watched") 
+  // 2. Loop over them and call .remove() on each
+    rmWatched.forEach((btn)=>{
+      btn.remove()
+    })
+
+  // 3. Call updateCount()
+    updateCount();
+  // 4. Call applyFilter(currentFilter)
+    applyFilter(currentFilter);
+})
