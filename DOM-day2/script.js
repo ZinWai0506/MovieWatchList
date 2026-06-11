@@ -53,7 +53,7 @@ console.log(titleInput.getAttribute("required"))     // → "" (empty string = i
 // setAttribute changes or adds an attribute
 titleInput.setAttribute("placeholder", "Try: The Matrix")
 // Refresh — the placeholder text in the input changed
-
+console.dir(titleInput);
 // removeAttribute removes it entirely
 titleInput.removeAttribute("required")
 // The input is no longer required — blank submissions won't be blocked
