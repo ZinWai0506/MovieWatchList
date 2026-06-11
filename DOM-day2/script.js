@@ -83,6 +83,7 @@ movieForm.addEventListener("submit", (event) => {
   movieList.appendChild(newCard);
   //    Type a title and genre, submit — confirm you see them in DevTools
   updateCount();
+  applyFilter(currentFilter);
   // 5. At the end, reset the form so the inputs are blank for the next entry
   movieForm.reset()
   //    .reset() clears all inputs in the form at once — no need to blank them one by one
