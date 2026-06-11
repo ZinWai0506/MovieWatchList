@@ -81,7 +81,7 @@ movieForm.addEventListener("submit", (event) => {
   // 4. Append the newly created card into your <ul> list
   movieList.appendChild(newCard);
   //    Type a title and genre, submit — confirm you see them in DevTools
-
+  updateCount();
   // 5. At the end, reset the form so the inputs are blank for the next entry
   movieForm.reset()
   //    .reset() clears all inputs in the form at once — no need to blank them one by one
@@ -152,3 +152,17 @@ function createMovieCard(title, genre) {
   //    The function's job is to build and return. Appending is the caller's job.
 }
 
+//Phase 6 part 1
+function updateCount() {
+  // 1. Query all cards in the list
+  //    hint: movieList.querySelectorAll(".movie-card").length
+  const cardList = movieList.querySelectorAll(".movie-card").length;
+  // 2. Update movieCount.textContent
+  //    e.g. "3 movies" or "1 movie" — handle the singular if you want a bonus
+  if ( movieCount === 1){
+    movieCount.textContent = "1 movie";
+  }
+  else {
+    movieCount.textContent =`${movieCount} movies`;
+  }
+}
