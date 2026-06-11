@@ -6,7 +6,7 @@ const titleInput = document.getElementById("title-input")
 const genreInput = document.getElementById("genre-input")
 const movieList = document.getElementById("movie-list")
 const clearWatchedBtn =document.getElementById("clear-watched-btn")
-const filterBtns = document.querySelectorAll("filter-btn")
+const filterBtns = document.querySelectorAll(".filter-btn")
 // select #movie-form        → store in movieForm
 // select #title-input       → store in titleInput
 // select #genre-input       → store in genreInput
@@ -32,48 +32,6 @@ movieCount.classList.remove("active-filter")
 movieCount.classList.toggle("active-filter")
 movieCount.classList.toggle("active-filter")
 
-
-// getAttribute reads the HTML attribute as it was written in the file
-console.log(titleInput.getAttribute("placeholder"))  // → "Movie title..."
-console.log(titleInput.getAttribute("type"))         // → "text"
-console.log(titleInput.getAttribute("required"))     // → "" (empty string = it exists)
-
-// setAttribute changes or adds an attribute
-titleInput.setAttribute("placeholder", "Try: The Matrix")
-// Refresh — the placeholder text in the input changed
-
-// removeAttribute removes it entirely
-titleInput.removeAttribute("required")
-// The input is no longer required — blank submissions won't be blocked
-titleInput.setAttribute("required", "")  // put it back
-
-titleInput.getAttribute("value")  // → null (the HTML never had a value attribute)
-titleInput.value        
-
-
-movieForm.addEventListener("submit", (event) => {
-  // 1. Stop the browser from reloading the page
-  //    Without this line, the page refreshes on every submit and you lose everything
-  event.preventDefault()
-
-  // 2. Read the movie title from the input — use .value, not getAttribute
-  const title = titleInput.value
-
-  // 3. Read the genre the same way
-  const genre = genreInput.value
-
-  // 4. Log both values to the console
-  //    Type a title and genre, submit — confirm you see them in DevTools
-  console.log("Title:", title)
-  console.log("Genre:", genre)
-
-
-  // 5. At the end, reset the form so the inputs are blank for the next entry
-  movieForm.reset()
-  //    .reset() clears all inputs in the form at once — no need to blank them one by one
-
-  // 6. Don't build cards yet — that's Phase 4
-})
 
 // select ALL elements with class "filter-btn" using querySelectorAll
 // store them in filterBtns — you'll loop over them in Phase 6
@@ -125,6 +83,7 @@ movieForm.addEventListener("submit", (event) => {
   movieList.appendChild(newCard);
   //    Type a title and genre, submit — confirm you see them in DevTools
   updateCount();
+  applyFilter(currentFilter);
   // 5. At the end, reset the form so the inputs are blank for the next entry
   movieForm.reset()
   //    .reset() clears all inputs in the form at once — no need to blank them one by one
@@ -172,6 +131,7 @@ function createMovieCard(title, genre) {
 
   // 3. Create a <div> for the buttons — class "movie-actions"
     const movieAction = document.createElement("div")
+    movieAction.classList.add("movie-actions")
 
   //    Inside it, create two <button> elements:
     const watchBtn = document.createElement("button")
@@ -194,19 +154,62 @@ function createMovieCard(title, genre) {
     return li;
   //    The function's job is to build and return. Appending is the caller's job.
 }
+// event.target is the button that was clicked
+// event.target.closest("li") walks UP the tree and returns the first <li> it finds
+// This gives you the whole card, not just the button
+
+
+// Now you can do card.remove(), card.classList.toggle("watched"), etc.
+
+//phase 5 
+movieList.addEventListener("click", (event) => {
+  // 1. If the click was not on a BUTTON, return early and stop running
+  if (event.target.tagName !== "BUTTON") return;
+
+  // 2. Get the card the button lives in (Using 'card' consistently)
+  const card = event.target.closest("li");
+
+  // 3. Was it the remove button?
+  const isRemoved = event.target.classList.contains("remove-btn");
+  if (isRemoved) {
+    card.remove();
+    updateCount();
+    applyFilter(currentFilter);
+  }
+
+  // 4. Was it the watch button?
+  const isContained = event.target.classList.contains("watch-btn");
+  if (isContained) {
+    // Toggle the class on the element
+    card.classList.toggle("watched");
+
+    // Update the text based strictly on the status AFTER toggling
+    if (card.classList.contains("watched")) {
+      event.target.textContent = "Unmark Watched";
+    } else {
+      event.target.textContent = "Mark Watched";
+    }
+      
+    // Re-apply the view layer filter state
+    applyFilter(currentFilter);
+  }
+});
+    
+
 
 //Phase 6 part 1
 function updateCount() {
   // 1. Query all cards in the list
+  
   //    hint: movieList.querySelectorAll(".movie-card").length
   const cardList = movieList.querySelectorAll(".movie-card").length;
   // 2. Update movieCount.textContent
   //    e.g. "3 movies" or "1 movie" — handle the singular if you want a bonus
-  if ( movieCount === 1){
+  if ( cardList === 1){
     movieCount.textContent = "1 movie";
   }
   else {
-    movieCount.textContent =`${movieCount} movies`;
+    movieCount.textContent = `${cardList} movies`;
   }
 }
 function updateFilterButtons(activeFilter) {
@@ -238,25 +241,25 @@ function applyFilter(filter) {
 
   // 4. Loop over every card and decide: show it or hide it?
     cards.forEach((card)=>{
-      const iaWatched = card.classList.contains("watched")
+      const isWatched = card.classList.contains("watched")
       if (filter === "all"){
         card.classList.remove("filtered-out")
 
       }
       else if (filter === "watched"){
         if (isWatched){
-          card.classlist.remove("filtered-out")
+          card.classList.remove("filtered-out")
         }
         else {
-          card.classlist.add("filtered-out")
+          card.classList.add("filtered-out")
         }
       }
       else if (filter === "unwatched"){
-        if (isWatched){
-          card.classlist.remove("filtered-out")
+        if (!isWatched){
+          card.classList.remove("filtered-out")
         }
         else {
-          card.classlist.add("filtered-out")
+          card.classList.add("filtered-out")
         }
         
       }
@@ -270,8 +273,8 @@ function applyFilter(filter) {
   //    hint: card.classList.add("filtered-out") hides it, .remove("filtered-out") shows it
 }
 filterBtns.forEach((button)=>{
-  addEventListener("click",()=>{
-    const filterName = btn.id.replace("filter-", "");
+  button.addEventListener("click",()=>{
+    const filterName = button.id.replace("filter-", "");
     applyFilter(filterName)
   })
 
